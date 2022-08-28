@@ -20,5 +20,10 @@ public class toppageController {
         return "views/category/index.html";
     }
 
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String search(Model model) {
+        model.addAttribute("message", "search");
+        return "views/category/search.html";
+    }
 
 }
