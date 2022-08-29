@@ -7,15 +7,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
+/**
+ * カテゴリ情報 Entity
+ */
 @Table(name = "category")
 @Entity
 public class Category {
+
+
+    /**
+     * ID
+     */
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * カテゴリー名
+     */
     @Column(name = "category", nullable = false)
     private String category;
 

@@ -11,29 +11,49 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
+/**
+ * 商品情報 Entity
+ */
 @Table(name = "products")
 @Entity
 public class Products {
 
+    /**
+     * ID
+     */
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * カテゴリーID
+     */
     @ManyToOne
     @Column(name = "category_id", nullable = false)
     private Category category;;
 
+    /**
+     * 名前
+     */
     @Column(name = "name", nullable = false)
     private String name;
 
+    /**
+     * 販売日
+     */
     @Column(name = "sells_day", nullable = false)
     private Date sells_day;
 
+    /**
+     * 価格
+     */
     @Column(name = "price", nullable = false)
     private int price;
 
+    /**
+     * 詳細
+     */
     @Lob
     @Column(name = "detali", nullable = false)
     private String detail;
