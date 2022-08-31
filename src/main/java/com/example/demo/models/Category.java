@@ -15,11 +15,9 @@ import javax.persistence.Table;
 @Entity
 public class Category {
 
-
     /**
      * ID
      */
-
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

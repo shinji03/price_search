@@ -5,7 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.models.Category;
 
+/**
+ * カテゴリー情報 Repository
+ */
 @Repository
-public interface CategoryRepository  extends JpaRepository <Category, Integer>{
+public interface CategoryRepository extends JpaRepository <Category, Integer>{
 
 }
