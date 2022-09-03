@@ -56,7 +56,7 @@ public class Products {
      * 詳細
      */
     @Lob
-    @Column(name = "detali", nullable = false)
+    @Column(name = "detail", nullable = false)
     private String detail;
 
     public Integer getId() {

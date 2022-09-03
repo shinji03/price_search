@@ -14,12 +14,20 @@
             <tr>
                 <th>ID</th>
                 <th>カテゴリー名</th>
+                <th>商品名</th>
+                <th>販売日</th>
+                <th>価格</th>
+                <th>詳細</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="category : ${categorylist}" th:object="${category}">
+            <tr th:each="products : ${productslist}" th:object="${products}">
                 <td class="center" th:text="*{id}"></td>
-                <td th:text="*{category}"></td>
+                <td th:text="*{category.category}"></td>
+                <td th:text="*{name}"></td>
+                <td th:text="*{sells_day}"></td>
+                <td th:text="*{price}"></td>
+                <td th:text="*{detail}"></td>
             </tr>
         </tbody>
     </table>
