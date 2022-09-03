@@ -30,9 +30,21 @@ public class ProductsController {
      */
     @RequestMapping(value = "/products/list", method = RequestMethod.GET)
     public String displayList(Model model) {
-      List<Products> Productslist = productsservice.searchAll();
-      model.addAttribute("productslist", Productslist);
-      return "views/products/list.html";
+        List<Products> Productslist = productsservice.searchAll();
+        model.addAttribute("productslist", Productslist);
+        return "views/products/list.html";
+    }
+
+    /**
+     * 検索結果画面を表示
+     * @param model Model
+     * @return 検索結果一覧画面のHTML
+     */
+    @RequestMapping(value = "/products/index", method = RequestMethod.GET)
+    public String displayIndex(Model model) {
+        //List<Products> Productslist = productsservice.searchAll();
+        //model.addAttribute("productslist", Productslist);
+        return "views/products/index.html";
     }
 
 }
