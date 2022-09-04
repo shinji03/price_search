@@ -22,7 +22,7 @@
         </thead>
         <tbody>
             <tr th:each="products : ${productslist}" th:object="${products}">
-                <td class="center" th:text="*{id}"></td>
+                <td th:text="*{id}"></td>
                 <td th:text="*{category.category}"></td>
                 <td th:text="*{name}"></td>
                 <td th:text="*{sells_day}"></td>
