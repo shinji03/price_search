@@ -44,7 +44,7 @@ public class ProductsController {
     @RequestMapping(value = "/products/list", method = RequestMethod.GET)
     public String displayList(Model model) {
         List<Products> Productslist = productsservice.searchAll();
-        model.addAttribute("productslist", Productslist);
+        model.addAttribute("productsList", Productslist);
         return "views/products/list.html";
     }
 
@@ -74,7 +74,7 @@ public class ProductsController {
     @RequestMapping(value = "/products/result", method = RequestMethod.GET)
     public String displayResult(@RequestParam(defaultValue = "NOT PARAM") String proName, Model model) {
         List<Products> Productslist = productsservice.searchProductName(proName);
-        model.addAttribute("productslist", Productslist);
+        model.addAttribute("productsList", Productslist);
         System.out.println(proName);
         System.out.println(Productslist);
         return "views/products/result.html";
