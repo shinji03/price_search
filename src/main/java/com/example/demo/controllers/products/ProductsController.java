@@ -7,8 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.models.Category;
 import com.example.demo.models.Products;
+import com.example.demo.repositories.ProductsRepository;
+import com.example.demo.service.CategoryService;
 import com.example.demo.service.ProductsService;
 
 /**
@@ -18,10 +22,19 @@ import com.example.demo.service.ProductsService;
 public class ProductsController {
 
     /**
+     * カテゴリー情報 Service
+     */
+    @Autowired
+    CategoryService categoryService;
+
+    /**
      * 商品情報 Service
      */
     @Autowired
     ProductsService productsservice;
+
+    @Autowired
+    ProductsRepository productsRepository;
 
     /**
      * 商品情報一覧画面を表示
@@ -42,20 +55,28 @@ public class ProductsController {
      */
     @RequestMapping(value = "/products/index", method = RequestMethod.GET)
     public String displayIndex(Model model) {
-        //List<Products> Productslist = productsservice.searchAll();
-        //model.addAttribute("productslist", Productslist);
+
+        //カテゴリーのリストの作成
+        List<Category> Categorylist = categoryService.searchAll();
+        model.addAttribute("categoryList", Categorylist);
+
+        //商品リストの作成
+        List<Products> Productslist = productsservice.searchAll();
+        model.addAttribute("productsList", Productslist);
         return "views/products/index.html";
     }
 
     /**
-     * 検索結果画面を表示
+     * 検索結果を表示
      * @param model Model
      * @return 検索結果一覧画面のHTML
      */
     @RequestMapping(value = "/products/result", method = RequestMethod.GET)
-    public String displayResult(Model model) {
-        List<Products> Productslist = productsservice.searchProducts();
+    public String displayResult(@RequestParam(defaultValue = "NOT PARAM") String proName, Model model) {
+        List<Products> Productslist = productsservice.searchProductName(proName);
         model.addAttribute("productslist", Productslist);
+        System.out.println(proName);
+        System.out.println(Productslist);
         return "views/products/result.html";
     }
 

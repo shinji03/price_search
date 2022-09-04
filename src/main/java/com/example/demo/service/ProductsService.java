@@ -22,9 +22,9 @@ public class ProductsService {
         return productsRepository.findAll();
     }
 
-    public List<Products> searchProducts() {
+    public List<Products> searchProductName(String proName) {
         // 入力内容に応じて、商品の詳細を検索
-        return productsRepository.findByName("AMD Ryzen 9 5950X");
+        return productsRepository.findByName(proName);
     }
 
 }

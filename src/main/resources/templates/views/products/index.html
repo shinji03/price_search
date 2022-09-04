@@ -18,10 +18,24 @@
         <select id="products" name="proName">
             <option value="00">商品選択</option>
             <option th:each="products : ${productsList}"
-                th:value="*{products.id}" th:date-val="*{products.category.id}"
+                th:value="*{products.name}" th:date-val="*{products.category.id}"
                 th:text="*{products.name}"></option>
         </select><br>
 
+
+        <select id="category">
+            <option value="00">カテゴリー選択</option>
+            <option th:each="category : ${categoryList}"
+                th:value="*{category.id}" th:text="*{category.category}"></option>
+        </select>
+        <select id="products" name="proName">
+            <option value="00">商品選択</option>
+            <option th:each="products : ${productsList}"
+                th:value="*{products.name}" th:date-val="*{products.category.id}"
+                th:text="*{products.name}"></option>
+        </select><br>
+
+<!--
         <select id="category">
             <option value="00">カテゴリー選択</option>
             <option th:each="category : ${categoryList}"
@@ -45,19 +59,7 @@
                 th:value="*{products.id}" th:date-val="*{products.category.id}"
                 th:text="*{products.name}"></option>
         </select><br>
-
-        <select id="category">
-            <option value="00">カテゴリー選択</option>
-            <option th:each="category : ${categoryList}"
-                th:value="*{category.id}" th:text="*{category.category}"></option>
-        </select>
-        <select id="products" name="proName">
-            <option value="00">商品選択</option>
-            <option th:each="products : ${productsList}"
-                th:value="*{products.id}" th:date-val="*{products.category.id}"
-                th:text="*{products.name}"></option>
-        </select><br>
-
+-->
         <input type="submit" value="検索">
     </form>
 

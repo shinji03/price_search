@@ -11,4 +11,5 @@ import com.example.demo.models.Products;
 public interface ProductsRepository extends JpaRepository<Products, Integer> {
 
     List<Products> findByName(String name);
+
 }
