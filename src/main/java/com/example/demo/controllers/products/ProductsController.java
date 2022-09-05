@@ -85,7 +85,7 @@ public class ProductsController {
             Productslist.addAll(productsservice.searchProductName(proname));
             Price = Price + productsservice.searchProductName(proname).get(0).getPrice();
             //System.out.println(proname);
-            //System.out.println(i);
+            //System.out.println(Price);
         }
 
         model.addAttribute("productsList", Productslist);
