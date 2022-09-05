@@ -22,6 +22,17 @@
                 th:text="*{products.name}"></option>
         </select><br>
 
+        <select id="category">
+            <option value="00">カテゴリー選択</option>
+            <option th:each="category : ${categoryList}"
+                th:value="*{category.id}" th:text="*{category.category}"></option>
+        </select>
+        <select id="products" name="proName">
+            <option value="">商品選択</option>
+            <option th:each="products : ${productsList}"
+                th:value="*{products.name}" th:date-val="*{products.category.id}"
+                th:text="*{products.name}"></option>
+        </select><br>
 
         <select id="category">
             <option value="00">カテゴリー選択</option>
@@ -35,7 +46,6 @@
                 th:text="*{products.name}"></option>
         </select><br>
 
-<!--
         <select id="category">
             <option value="00">カテゴリー選択</option>
             <option th:each="category : ${categoryList}"
@@ -44,65 +54,14 @@
         <select id="products" name="proName">
             <option value="00">商品選択</option>
             <option th:each="products : ${productsList}"
-                th:value="*{products.id}" th:date-val="*{products.category.id}"
+                th:value="*{products.name}" th:date-val="*{products.category.id}"
                 th:text="*{products.name}"></option>
         </select><br>
 
-        <select id="category">
-            <option value="00">カテゴリー選択</option>
-            <option th:each="category : ${categoryList}"
-                th:value="*{category.id}" th:text="*{category.category}"></option>
-        </select>
-        <select id="products" name="proName">
-            <option value="00">商品選択</option>
-            <option th:each="products : ${productsList}"
-                th:value="*{products.id}" th:date-val="*{products.category.id}"
-                th:text="*{products.name}"></option>
-        </select><br>
--->
         <input type="submit" value="検索">
     </form>
 
     <!--
-        <select id="category">
-            <option value="">カテゴリーの選択
-            <option value="cpu">CPU
-            <option value="mb">マザーボード
-            <option value="gpu">GPU
-            <option value="psu">電源ユニット
-            <option value="pccase">PCケース
-        </select>
-
-
-        <select id="products">
-            <option value="">選択してください</option>
-            <option value="AMD Ryzen 9 5950X" data-val="cpu">AMD Ryzen 9
-                5950X</option>
-            <option value="AMD Ryzen 9 5900X" data-val="cpu">AMD Ryzen 9
-                5900X</option>
-            <option value="AMD Ryzen 7 5800X" data-val="cpu">AMD Ryzen 7
-                5800X</option>
-            <option value="AMD Ryzen 7 5800X3D" data-val="cpu">AMD Ryzen
-                7 5800X3D</option>
-            <option value="PRIME B660M-A D4" data-val="mb">PRIME B660M-A
-                D4</option>
-            <option value="TUF-RTX3080-O10G-V2-GAMING" data-val="mb">ROG
-                TUF-RTX3080-O10G-V2-GAMING</option>
-            <option value="ROG STRIX Z690-F GAMING WIFI" data-val="gpu">ROG
-                STRIX Z690-F GAMING WIFI</option>
-            <option value="GeForce RTX 3070 Ti VENTUS 3X 8G OC [PCIExp 8GB]"
-                data-val="gpu">ROG GeForce RTX 3070 Ti VENTUS 3X 8G OC
-                [PCIExp 8GB]</option>
-            <option value="RM850x 2021 CP-9020200-JP" data-val="psu">RM850x
-                2021 CP-9020200-JP</option>
-            <option value="RM850 2021 CP-9020235-JP [ブラック]" data-val="psu">RM850
-                2021 CP-9020235-JP [ブラック]</option>
-            <option value="H1 CS-H11B" data-val="pccase">H1 CS-H11B</option>
-            <option value="MasterBox NR200P MAX NR200P-MCNN85-SL0"
-                data-val="pccase">MasterBox NR200P MAX NR200P-MCNN85-SL0</option>
-
-        </select>
-
         <script>
             var $products = $('select[id="products"]');
             $('select[id="category"]').change(function() {

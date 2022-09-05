@@ -2,7 +2,7 @@ package com.example.demo.forms;
 
 import com.example.demo.models.Products;
 
-public class ProductsForm extends Products{
+public class ProductsForm extends Products {
 
     private String proName;
 

@@ -1,5 +1,6 @@
 package com.example.demo.controllers.products;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,10 +74,22 @@ public class ProductsController {
      */
     @RequestMapping(value = "/products/result", method = RequestMethod.GET)
     public String displayResult(@RequestParam(defaultValue = "NOT PARAM") String proName, Model model) {
-        List<Products> Productslist = productsservice.searchProductName(proName);
+
+        //送られてきた値をsplitを使って分ける
+        String[] pronames = proName.split(",");
+        List<Products> Productslist = new ArrayList<Products>();
+        //合計金額の初期値を0円に設定
+        Integer Price = 0;
+
+        for (String proname : pronames) {
+            Productslist.addAll(productsservice.searchProductName(proname));
+            Price = Price + productsservice.searchProductName(proname).get(0).getPrice();
+            //System.out.println(proname);
+            //System.out.println(i);
+        }
+
         model.addAttribute("productsList", Productslist);
-        System.out.println(proName);
-        System.out.println(Productslist);
+        model.addAttribute("totalPrice", String.format("%,d", Price));
         return "views/products/result.html";
     }
 
