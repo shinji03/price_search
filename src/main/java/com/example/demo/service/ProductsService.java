@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ public class ProductsService {
     public List<Products> searchProductName(String proName) {
         // 入力内容に応じて、商品の詳細を検索
         return productsRepository.findByName(proName);
+    }
+
+    public String[] removeElement(String[] pronames, String item) {
+        return Arrays.stream(pronames)
+                .filter(proname -> !proname.equals(item))
+                .toArray(String[]::new);
     }
 
 }

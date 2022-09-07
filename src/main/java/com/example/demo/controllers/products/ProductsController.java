@@ -77,6 +77,11 @@ public class ProductsController {
 
         //送られてきた値をsplitを使って分ける
         String[] pronames = proName.split(",");
+
+        //何も入力されていない状態を排除する（何も入力されていない場合は00が入力される）
+        pronames = productsservice.removeElement(pronames, "00");
+
+        //for文で使用する新たなリストの作成
         List<Products> Productslist = new ArrayList<Products>();
         //合計金額の初期値を0円に設定
         Integer Price = 0;
