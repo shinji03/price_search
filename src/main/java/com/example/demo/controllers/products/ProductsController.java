@@ -98,4 +98,20 @@ public class ProductsController {
         return "views/products/result.html";
     }
 
+    /**
+     * 商品の登録
+     * @param model Model
+     * @return 検索結果一覧画面のHTML
+     */
+
+    @RequestMapping(value = "/products/create", method = RequestMethod.GET)
+    public String displayCreate(Model model) {
+
+        //カテゴリーのリストの作成
+        List<Category> Categorylist = categoryService.searchAll();
+        model.addAttribute("categoryList", Categorylist);
+
+        return "views/products/create.html";
+    }
+
 }
