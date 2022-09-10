@@ -8,12 +8,13 @@
 <body>
     <p>商品の追加</p>
 
-    <form th:action="@{/products/result}" method="get">
+    <form th:action="@{/products/create}" method="POST">
 
-        <label for="${name}">商品のカテゴリー</label> <br /> <select id="category">
+        <label for="${name}">商品のカテゴリー</label> <br />
+        <select id="category" name="category">
             <option value="00">カテゴリー選択</option>
             <option th:each="category : ${categoryList}"
-                th:value="*{category.id}" th:text="*{category.category}"></option>
+            th:value="*{category.id}" th:text="*{category.category}"></option>
         </select> <br /> <br />
 
         <label for="name">商品名</label> <br />
@@ -34,13 +35,7 @@
         <textarea name="detail"  rows="10" cols="50">[[${product.detail}]]</textarea>
         <br /> <br />
 
-
-        <!--
-    <input type="hidden" name="${AttributeConst.EMP_ID.getValue()}"
-        value="${employee.id}" />
-    <input type="hidden" name="${AttributeConst.TOKEN.getValue()}"
-        value="${_token}" />
-    -->
+        <input type="hidden" name="token" th:value="${product.token}" />
 
         <button type="submit">登録</button>
     </form>

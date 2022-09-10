@@ -3,6 +3,9 @@ package com.example.demo.controllers.products;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +42,9 @@ public class ProductsController {
 
     @Autowired
     ProductsRepository productsRepository;
+
+    @Autowired
+    HttpSession session; // セッション
 
     /**
      * 商品情報一覧画面を表示
@@ -110,6 +116,8 @@ public class ProductsController {
     @RequestMapping(value = "/products/new", method = RequestMethod.GET)
     public ModelAndView displayNew(@ModelAttribute ProductsForm productsForm, ModelAndView mv) {
 
+        productsForm.setToken(session.getId());
+
         //カテゴリーのリストの作成
         List<Category> Categorylist = categoryService.searchAll();
         mv.addObject("categoryList", Categorylist);
@@ -126,27 +134,32 @@ public class ProductsController {
      * @return 検索結果一覧画面のHTML
      */
 
-    @RequestMapping(value = "/products/create", method = RequestMethod.GET)
-    public String displayCreate() {
+    @RequestMapping(value = "/products/create", method = RequestMethod.POST)
+    @Transactional // メソッド開始時にトランザクションを開始、終了時にコミットする
+    public ModelAndView displayCreate(@ModelAttribute ProductsForm productsForm, ModelAndView mv) {
 
-        return "views/products/list.html";
-    }
+        if (productsForm.getToken() != null && productsForm.getToken().equals(session.getId())) {
 
-    /*
+            Products p = new Products();
 
-// 作成画面に遷移する内容の書き方
-    @RequestMapping(path = "/reports/new", method = RequestMethod.GET)
-    public ModelAndView reportsNew(@ModelAttribute ReportForm reportForm, ModelAndView mv) {
+            p.setCategory((Category)productsForm.getCategory());
+            p.setName(productsForm.getName());
+            p.setSells_day(productsForm.getSells_day());
+            p.setPrice(productsForm.getPrice());
+            p.setDetail(productsForm.getDetail());
 
-        reportForm.setToken(session.getId());
-        reportForm.setReportDate(new Date(System.currentTimeMillis()));
+            productsRepository.save(p);
 
-        mv.addObject("report", reportForm);
+            mv = new ModelAndView("views/products/list.html");
 
-        mv.setViewName("views/reports/new");
-
+        } else {
+            //トークンIDが異なる場合
+            mv.setViewName("/");
+        }
         return mv;
+
     }
+/*
     //作成のやり方
     @RequestMapping(path = "/reports/create", method = RequestMethod.POST)
     @Transactional // メソッド開始時にトランザクションを開始、終了時にコミットする
@@ -155,11 +168,11 @@ public class ProductsController {
         if (reportForm.getToken() != null && reportForm.getToken().equals(session.getId())) {
 
             Report r = new Report();
-            r.setEmployee((Employee)session.getAttribute("login_employee"));
+            r.setEmployee((Employee) session.getAttribute("login_employee"));
 
             Date report_date = new Date(System.currentTimeMillis());
-            if(reportForm.getReportDate() != null) {
-                report_date =reportForm.getReportDate();
+            if (reportForm.getReportDate() != null) {
+                report_date = reportForm.getReportDate();
             }
             r.setReportDate(report_date);
 
@@ -190,5 +203,4 @@ public class ProductsController {
         return mv;
     }
 */
-
 }
