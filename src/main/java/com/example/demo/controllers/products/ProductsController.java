@@ -2,10 +2,12 @@ package com.example.demo.controllers.products;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -98,8 +100,6 @@ public class ProductsController {
         for (String proname : pronames) {
             Productslist.addAll(productsservice.searchProductName(proname));
             Price = Price + productsservice.searchProductName(proname).get(0).getPrice();
-            //System.out.println(proname);
-            //System.out.println(Price);
         }
 
         model.addAttribute("productsList", Productslist);
@@ -139,68 +139,77 @@ public class ProductsController {
     public ModelAndView displayCreate(@ModelAttribute ProductsForm productsForm, ModelAndView mv) {
 
         if (productsForm.getToken() != null && productsForm.getToken().equals(session.getId())) {
-
             Products p = new Products();
 
-            p.setCategory((Category)productsForm.getCategory());
+            //商品の追加
+            p.setCategory((Category) productsForm.getCategory());
             p.setName(productsForm.getName());
             p.setSells_day(productsForm.getSells_day());
             p.setPrice(productsForm.getPrice());
             p.setDetail(productsForm.getDetail());
-
             productsRepository.save(p);
 
-            mv = new ModelAndView("views/products/list.html");
+            //商品一覧へ遷移
+            List<Products> Productslist = productsservice.searchAll();
+            mv.addObject("productsList", Productslist);
+            mv.setViewName("views/products/list.html");
 
         } else {
             //トークンIDが異なる場合
-            mv.setViewName("/");
+            mv.setViewName("views/toppage/toppage.html");
         }
         return mv;
 
     }
-/*
-    //作成のやり方
-    @RequestMapping(path = "/reports/create", method = RequestMethod.POST)
-    @Transactional // メソッド開始時にトランザクションを開始、終了時にコミットする
-    public ModelAndView reportsCreate(@ModelAttribute ReportForm reportForm, ModelAndView mv) {
 
-        if (reportForm.getToken() != null && reportForm.getToken().equals(session.getId())) {
+    /**
+     * 編集画面に遷移する
+     * @param model Model
+     * @return 検索結果一覧画面のHTML
+     */
+    @RequestMapping(path = "/produts/edit", method = RequestMethod.GET)
+    public ModelAndView displayshow(@ModelAttribute ProductsForm productsForm, ModelAndView mv) {
 
-            Report r = new Report();
-            r.setEmployee((Employee) session.getAttribute("login_employee"));
+        //System.out.println(proName);
 
-            Date report_date = new Date(System.currentTimeMillis());
-            if (reportForm.getReportDate() != null) {
-                report_date = reportForm.getReportDate();
-            }
-            r.setReportDate(report_date);
+        //選択された商品のidをもとにデータを取得
+        Optional<Products> Productslist = productsRepository.findById(productsForm.getId());
 
-            r.setTitle(reportForm.getTitle());
-            r.setContent(reportForm.getContent());
+        ModelMapper modelMapper = new ModelMapper();
+        productsForm = modelMapper.map(Productslist.orElse(new Products()),ProductsForm.class);
+        productsForm.setToken(session.getId());
 
-            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            r.setCreated_at(currentTime);
-            r.setUpdated_at(currentTime);
+        mv.addObject("productsList", productsForm);
 
-            List<String> errors = validator.validate(r);
+        //カテゴリーのリストの作成
+        List<Category> Categorylist = categoryService.searchAll();
+        mv.addObject("categoryList", Categorylist);
 
-            if (errors.size() > 0) {
-                reportForm.setToken(session.getId());
-                mv.addObject("report", reportForm);
-                mv.addObject("errors", errors);
-                mv.setViewName("views/reports/new");
-            } else {
-                reportRepository.save(r);
-                session.setAttribute("flush", "登録が完了しました。");
-
-                mv = new ModelAndView("redirect:/reports/index"); // リダイレクト
-            }
-        } else {
-            mv.setViewName("views/common/error"); // 真っ白な画面は嫌なので、エラー画面を出す
-        }
+        mv.setViewName("views/products/edit");
 
         return mv;
+
     }
-*/
+
+    /*
+
+    public ModelAndView reportsEdit(@ModelAttribute ReportForm reportForm, ModelAndView mv) {
+
+        Optional<Report> e = reportRepository.findById(reportForm.getId());
+        // ModelMapperでEntity→Formオブジェクトへマッピング
+        ModelMapper modelMapper = new ModelMapper();
+        reportForm = modelMapper.map(e.orElse(new Report()), ReportForm.class);
+
+        reportForm.setToken(session.getId());
+
+        mv.addObject("report", reportForm);
+
+        session.setAttribute("report_id", reportForm.getId());
+
+        mv.setViewName("views/reports/edit");
+
+        return mv;
+    }*/
+
+
 }

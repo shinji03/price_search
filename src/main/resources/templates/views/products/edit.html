@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>編集画面</title>
+</head>
+<body>
+
+    <p>編集</p>
+
+    <form th:action="@{/products/update}" method="POST">
+
+        <label for="${name}">商品のカテゴリー</label> <br />
+        <select id="category" name="category">
+            <option value="${productsList.category.id}" th:text="${productsList.category.category}"></option>
+            <option th:each="category : ${categoryList}"
+            th:value="*{category.id}" th:text="*{category.category}"></option>
+        </select> <br /> <br />
+
+        <label for="name">商品名</label> <br />
+        <input type="text" name="name" th:value="${productsList.name}" />
+        <br /> <br />
+
+        <label for="sells_day">発売日</label> <br />
+        <input
+            type="date" name="sells_day" th:value="${#dates.format(productsList.sells_day, 'yyyy-MM-dd')}"/>
+        <br /> <br />
+
+        <label for="price">価格</label> <br />
+        <input
+            type="number" name="price" th:value="${productsList.price}" />
+        <br /> <br />
+
+        <label for="detail">詳細</label><br />
+        <textarea name="detail" rows="10" cols="50">[[${productsList.detail}]]</textarea>
+        <br />
+        <br />
+
+        <input type="hidden" name="token" th:value="${token}" />
+
+
+        <button type="submit">修正する</button>
+    </form>
+
+</body>
+</html>

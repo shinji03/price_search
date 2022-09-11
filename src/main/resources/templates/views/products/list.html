@@ -18,6 +18,7 @@
                 <th>販売日</th>
                 <th>価格</th>
                 <th>詳細</th>
+                <th>操作</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +29,8 @@
                 <td th:text="*{sells_day}"></td>
                 <td th:text="*{price}"></td>
                 <td th:text="*{detail}"></td>
+                <td><a th:href="@{/produts/edit(id=*{id})}">編集する</a></td>
+
             </tr>
         </tbody>
     </table>
