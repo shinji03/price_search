@@ -13,7 +13,7 @@
 
         <label for="${name}">商品のカテゴリー</label> <br />
         <select id="category" name="category">
-            <option value="${productsList.category.id}" th:text="${productsList.category.category}"></option>
+            <option th:value="${productsList.category.id}" th:text="${productsList.category.category}"></option>
             <option th:each="category : ${categoryList}"
             th:value="*{category.id}" th:text="*{category.category}"></option>
         </select> <br /> <br />
@@ -37,7 +37,7 @@
         <br />
         <br />
 
-        <input type="hidden" name="token" th:value="${token}" />
+        <input type="hidden" name="token" th:value="${productsList.token}" />
 
 
         <button type="submit">修正する</button>

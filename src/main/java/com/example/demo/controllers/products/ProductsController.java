@@ -149,10 +149,7 @@ public class ProductsController {
             p.setDetail(productsForm.getDetail());
             productsRepository.save(p);
 
-            //商品一覧へ遷移
-            List<Products> Productslist = productsservice.searchAll();
-            mv.addObject("productsList", Productslist);
-            mv.setViewName("views/products/list.html");
+            mv = new ModelAndView("redirect:/products/list"); // リダイレクト
 
         } else {
             //トークンIDが異なる場合
@@ -167,19 +164,20 @@ public class ProductsController {
      * @param model Model
      * @return 検索結果一覧画面のHTML
      */
-    @RequestMapping(path = "/produts/edit", method = RequestMethod.GET)
+    @RequestMapping(path = "/products/edit", method = RequestMethod.GET)
     public ModelAndView displayshow(@ModelAttribute ProductsForm productsForm, ModelAndView mv) {
 
-        //System.out.println(proName);
+        productsForm.setToken(session.getId());
 
         //選択された商品のidをもとにデータを取得
         Optional<Products> Productslist = productsRepository.findById(productsForm.getId());
 
         ModelMapper modelMapper = new ModelMapper();
-        productsForm = modelMapper.map(Productslist.orElse(new Products()),ProductsForm.class);
+        productsForm = modelMapper.map(Productslist.orElse(new Products()), ProductsForm.class);
         productsForm.setToken(session.getId());
 
         mv.addObject("productsList", productsForm);
+        session.setAttribute("product_id", productsForm.getId());
 
         //カテゴリーのリストの作成
         List<Category> Categorylist = categoryService.searchAll();
@@ -191,25 +189,36 @@ public class ProductsController {
 
     }
 
-    /*
+    /**
+     * 商品の編集を確定する
+     * @param model Model
+     * @return 検索結果一覧画面のHTML
+     */
+    @RequestMapping(path = "/products/update", method = RequestMethod.POST)
+    @Transactional // メソッド開始時にトランザクションを開始、終了時にコミットする
+    public ModelAndView displayUpdate(@ModelAttribute ProductsForm productsForm, ModelAndView mv) {
 
-    public ModelAndView reportsEdit(@ModelAttribute ReportForm reportForm, ModelAndView mv) {
+        if (productsForm.getToken() != null && productsForm.getToken().equals(session.getId())) {
 
-        Optional<Report> e = reportRepository.findById(reportForm.getId());
-        // ModelMapperでEntity→Formオブジェクトへマッピング
-        ModelMapper modelMapper = new ModelMapper();
-        reportForm = modelMapper.map(e.orElse(new Report()), ReportForm.class);
+            Optional<Products> opp = productsRepository.findById((Integer) session.getAttribute("product_id"));
+            Products p = opp.orElse(null);
+            p.setCategory(productsForm.getCategory());
+            p.setName((productsForm.getName()));
+            p.setSells_day(productsForm.getSells_day());
+            p.setPrice(productsForm.getPrice());
+            p.setDetail(productsForm.getDetail());
+            //編集の確定
+            productsRepository.save(p);
+            session.removeAttribute("product_id");
 
-        reportForm.setToken(session.getId());
 
-        mv.addObject("report", reportForm);
+            mv = new ModelAndView("redirect:/products/list"); // リダイレクト
 
-        session.setAttribute("report_id", reportForm.getId());
-
-        mv.setViewName("views/reports/edit");
-
+        } else {
+            //トークンIDが異なる場合
+            mv.setViewName("views/toppage/toppage.html");
+        }
         return mv;
-    }*/
-
+    }
 
 }
