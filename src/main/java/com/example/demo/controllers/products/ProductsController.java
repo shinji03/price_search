@@ -23,6 +23,7 @@ import com.example.demo.models.Products;
 import com.example.demo.repositories.ProductsRepository;
 import com.example.demo.service.CategoryService;
 import com.example.demo.service.ProductsService;
+import com.example.demo.validators.ProductsValidator;
 
 /**
  * カテゴリー情報 Controller
@@ -48,6 +49,10 @@ public class ProductsController {
     @Autowired
     HttpSession session; // セッション
 
+    @Autowired
+    ProductsValidator validator; // バリデーター
+
+
     /**
      * 商品情報一覧画面を表示
      * @param model Model
@@ -57,6 +62,14 @@ public class ProductsController {
     public String displayList(Model model) {
         List<Products> Productslist = productsservice.searchAll();
         model.addAttribute("productsList", Productslist);
+
+
+        //フラッシュメッセージの処理
+        if (session.getAttribute("flush") != null) {
+            model.addAttribute("flush", session.getAttribute("flush"));
+            session.removeAttribute("flush");
+        }
+
         return "views/products/list.html";
     }
 
@@ -147,10 +160,20 @@ public class ProductsController {
             p.setSells_day(productsForm.getSells_day());
             p.setPrice(productsForm.getPrice());
             p.setDetail(productsForm.getDetail());
-            productsRepository.save(p);
 
-            mv = new ModelAndView("redirect:/products/list"); // リダイレクト
+            List<String> errors = validator.validate(p);
 
+            if (errors.size() > 0) {
+                productsForm.setToken(session.getId());
+                mv.addObject("product", productsForm);
+                mv.addObject("errors", errors);
+                mv.setViewName("views/products/new");
+            } else {
+                productsRepository.save(p);
+                session.setAttribute("flush", "商品の追加が完了");
+
+                mv = new ModelAndView("redirect:/products/list");
+            }
         } else {
             //トークンIDが異なる場合
             mv.setViewName("views/toppage/toppage.html");
@@ -211,8 +234,11 @@ public class ProductsController {
             productsRepository.save(p);
             session.removeAttribute("product_id");
 
+            //フラッシュメッセージの追加
+            session.setAttribute("flush", "商品の追加が完了");
 
-            mv = new ModelAndView("redirect:/products/list"); // リダイレクト
+            // リストにリダイレクト
+            mv = new ModelAndView("redirect:/products/list");
 
         } else {
             //トークンIDが異なる場合

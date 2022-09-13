@@ -6,36 +6,31 @@
 <title>商品登録</title>
 </head>
 <body>
+    <div th:if="${errors != null}" id="flush_error">
+        入力内容にエラーがあります。<br />
+        <p th:each="error : ${errors}">・[[${error}]]</p>
+    </div>
     <p>商品の追加</p>
 
     <form th:action="@{/products/create}" method="POST">
 
-        <label for="${name}">商品のカテゴリー</label> <br />
-        <select id="category" name="category">
+        <label for="${name}">商品のカテゴリー</label> <br /> <select id="category"
+            name="category">
             <option value="00">カテゴリー選択</option>
             <option th:each="category : ${categoryList}"
-            th:value="*{category.id}" th:text="*{category.category}"></option>
-        </select> <br /> <br />
+                th:value="*{category.id}" th:text="*{category.category}"></option>
+        </select> <br /> <br /> <label for="name">商品名</label> <br /> <input
+            type="text" name="name" th:value="${product.name}" /> <br /> <br />
 
-        <label for="name">商品名</label> <br />
-        <input type="text" name="name" th:value="${product.name}" />
-        <br /> <br />
-
-        <label for="sells_day">発売日</label> <br />
-        <input
-            type="date" name="sells_day" th:value="${#dates.format(product.sells_day, 'yyyy-MM-dd')}"/>
-        <br /> <br />
-
-        <label for="price">価格</label> <br />
-        <input
-            type="number" name="price" th:value="${product.price}" />
-        <br /> <br />
-
-        <label for="detail">詳細</label> <br />
-        <textarea name="detail"  rows="10" cols="50">[[${product.detail}]]</textarea>
-        <br /> <br />
-
-        <input type="hidden" name="token" th:value="${product.token}" />
+        <label for="sells_day">発売日</label> <br /> <input type="date"
+            name="sells_day"
+            th:value="${#dates.format(product.sells_day, 'yyyy-MM-dd')}" /> <br />
+        <br /> <label for="price">価格</label> <br /> <input type="number"
+            name="price" th:value="${product.price}" /> <br /> <br /> <label
+            for="detail">詳細</label> <br />
+        <textarea name="detail" rows="10" cols="50">[[${product.detail}]]</textarea>
+        <br /> <br /> <input type="hidden" name="token"
+            th:value="${product.token}" />
 
         <button type="submit">登録</button>
     </form>
