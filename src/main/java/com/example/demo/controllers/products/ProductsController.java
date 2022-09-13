@@ -235,7 +235,7 @@ public class ProductsController {
             session.removeAttribute("product_id");
 
             //フラッシュメッセージの追加
-            session.setAttribute("flush", "商品の追加が完了");
+            session.setAttribute("flush", "商品の編集が完了");
 
             // リストにリダイレクト
             mv = new ModelAndView("redirect:/products/list");
