@@ -1,7 +1,5 @@
 package com.example.demo.models;
 
-import java.sql.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,7 +42,7 @@ public class Products {
      * 販売日
      */
     @Column(name = "sells_day", nullable = false)
-    private Date sells_day;
+    private String sells_day;
 
     /**
      * 価格
@@ -83,11 +81,11 @@ public class Products {
         this.name = name;
     }
 
-    public Date getSells_day() {
+    public String getSells_day() {
         return sells_day;
     }
 
-    public void setSells_day(Date sells_day) {
+    public void setSells_day(String sells_day) {
         this.sells_day = sells_day;
     }
 
