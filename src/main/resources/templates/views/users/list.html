@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"><head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+    <h1>ユーザー一覧</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ユーザーー名</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="users : ${usersList}" th:object="${users}">
+                <td class="center" th:text="*{id}"></td>
+                <td th:text="*{name}"></td>
+                <td><a th:href="@{/users/edit(id=*{id})}">編集する</a></td>
+
+            </tr>
+        </tbody>
+    </table>
+
+
+</body>
+</html>
