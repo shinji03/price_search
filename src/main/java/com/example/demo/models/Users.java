@@ -5,16 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
  * ユーザー情報 Entity
  */
 
-@Table(name = "users")
 @Entity
+@Table(name = "users")
 public class Users {
 
     /**
@@ -29,18 +27,17 @@ public class Users {
     /**
      * 名前
      */
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     /**
      * パスワード
      */
-    @ManyToOne
-    @JoinColumn(name = "password", nullable = false)
+    @Column(name = "password",length = 64,  nullable = false)
     private String password;
 
     /**
-     * 管理者権限
+     * 管理者権限(制作者=1, 利用者=0)
      */
     @Column(name = "admin_flag", nullable = false)
     private Integer adminFlag;
