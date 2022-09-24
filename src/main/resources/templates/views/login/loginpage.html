@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ログイン画面</title>
+</head>
+<body>
+
+    ログインする時に使用する画面
+
+    <h2>ログイン画面</h2>
+
+    <form method="POST" th:action="@{/authenticate}">
+
+        <table>
+            <tr>
+                <td>ユーザ名：</td>
+                <td><input type="text" id="name" name="name" /></td>
+            </tr>
+
+            <tr>
+                <td>パスワード：</td>
+                <td><input type="password" id="password" name="password" /></td>
+            </tr>
+            <tr>
+                <td><input type="hidden" name="token" value="${_token}" /></td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="submit">ログイン</button>
+                </td>
+            </tr>
+            <tr>
+                <td><a href="/users/new">新規登録</a></td>
+            </tr>
+        </table>
+
+    </form>
+
+</body>
+</html>

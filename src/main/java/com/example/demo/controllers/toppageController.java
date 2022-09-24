@@ -14,21 +14,10 @@ public class toppageController {
         return "views/toppage/toppage.html";
     }
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(Model model) {
-        model.addAttribute("message", "search");
-        return "views/category/index.html";
-    }
-
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String search(Model model) {
-        model.addAttribute("message", "search");
-        return "views/category/search.html";
-    }
-
+    //ログイン画面の呼び出し
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model) {
-        return "views/login/logintop.html";
+        return "views/login/loginpage.html";
     }
 
 }

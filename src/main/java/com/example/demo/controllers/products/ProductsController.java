@@ -1,9 +1,11 @@
 package com.example.demo.controllers.products;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
@@ -11,12 +13,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.forms.CategoryForm;
 import com.example.demo.forms.ProductsForm;
 import com.example.demo.models.Category;
 import com.example.demo.models.Products;
@@ -52,7 +57,6 @@ public class ProductsController {
     @Autowired
     ProductsValidator validator; // バリデーター
 
-
     /**
      * 商品情報一覧画面を表示
      * @param model Model
@@ -62,7 +66,6 @@ public class ProductsController {
     public String displayList(Model model) {
         List<Products> Productslist = productsservice.searchAll();
         model.addAttribute("productsList", Productslist);
-
 
         //フラッシュメッセージの処理
         if (session.getAttribute("flush") != null) {
@@ -89,6 +92,29 @@ public class ProductsController {
         List<Products> Productslist = productsservice.searchAll();
         model.addAttribute("productsList", Productslist);
         return "views/products/index.html";
+    }
+
+    /**
+     * カテゴリーに応じて選択
+     *
+     * @param pref
+     * @return カテゴリー毎のList
+     */
+    @RequestMapping(value = "/products/getProductsData", method = RequestMethod.POST)
+    public String getProductsData(ModelMap model, @RequestBody CategoryForm categoryForm)
+            throws IOException, ServletException {
+
+        System.out.println("確認");
+        System.out.println(categoryForm.getCategoryid());
+
+        //商品リストの作成
+        //List<Products> productsList = productsservice.findByCategory_id(category.getId().toString());
+        //model.addAttribute("productsList", Productslist);
+
+        //Category_idをもとにDBにアクセスしてデータの取得
+        List<Products> productsList = productsservice.findByCategory_id("1");
+        model.addAttribute("productsList", productsList);
+        return "views/products/index2::productsList";
     }
 
     /**
@@ -144,7 +170,7 @@ public class ProductsController {
     /**
      * 商品を登録する
      * @param model Model
-     * @return 検索結果一覧画面のHTML
+     * @return 一覧画面のHTML
      */
 
     @RequestMapping(value = "/products/create", method = RequestMethod.POST)

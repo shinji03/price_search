@@ -12,7 +12,10 @@ import com.example.demo.models.Users;
 public interface UsersRepository extends JpaRepository <Users, Integer> {
 
     public Long countByNameEquals(String name);
+
     //List<Users> findByName(String name);
     //public long countByName (String name);
+
+    public Users findByName(String name);
 
 }

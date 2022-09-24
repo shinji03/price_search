@@ -28,6 +28,11 @@ public class ProductsService {
         return productsRepository.findByName(proName);
     }
 
+    public List<Products> findByCategory_id(String id) {
+        // 入力内容に応じて、商品の詳細を検索
+        return productsRepository.serchCategory_id(id);
+    }
+
     public String[] removeElement(String[] pronames, String item) {
         return Arrays.stream(pronames)
                 .filter(proname -> !proname.equals(item))
